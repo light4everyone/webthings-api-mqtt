@@ -1,4 +1,4 @@
-export class Property {
+export class PropertyRegisterDto {
   title: string;
   description?: string;
   '@type': string;

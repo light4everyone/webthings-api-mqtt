@@ -1,11 +1,7 @@
-import { Property } from 'src/web-thing/models';
+import { ThingRegisterDto } from '../dto/thing-register.dto';
 
 export class RegisterThingCommand {
   constructor(
-    public readonly name: string,
-    public readonly title: string,
-    public readonly description: string,
-    public readonly type: string[],
-    public readonly properties: { [name: string]: Property }
+    public readonly thing: ThingRegisterDto
   ) {}
 }

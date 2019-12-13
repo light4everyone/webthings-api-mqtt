@@ -1,7 +1,7 @@
 import { RegisterThingCommand } from '../register-thing.command';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { ThingService } from '../../services';
-import { Thing } from '../../models';
+import { Thing, Property } from '../../models';
 
 @CommandHandler(RegisterThingCommand)
 export class RegisterThingHandler implements ICommandHandler<RegisterThingCommand> {
@@ -11,12 +11,21 @@ export class RegisterThingHandler implements ICommandHandler<RegisterThingComman
   ) { }
 
   async execute(command: RegisterThingCommand): Promise<void> {
+    const thing = command.thing;
+
     const newThing: Thing = {
-      type: command.type,
-      description: command.description,
-      properties: command.properties,
-      title: command.title,
-      name: command.name
+      type: thing.type,
+      description: thing.description,
+      properties: thing.properties.map(p => ({
+        'title': p.title,
+        'description': p.description,
+        '@type': p['@type'],
+        'type': p.type,
+        'name': p.name
+      } as Property)),
+      title: thing.title,
+      name: thing.name,
+      value: null
     };
 
     this.thingService.registerThing(newThing);

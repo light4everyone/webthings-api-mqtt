@@ -19,8 +19,7 @@ export class GetDescriptionHandler implements IQueryHandler<GetDescriptionQuery>
       'id': `https://mywebthingserver.com/things/${query.thingName}`,
       'title': thing.title,
       'description': thing.description,
-      'properties': Object.keys(thing.properties).reduce((acc, propertyName) => {
-        const property = thing.properties[propertyName];
+      'properties': thing.properties.reduce((acc, property) => {
         const propertyDto = {
           'title': property.title,
           'type': property.type,
@@ -28,11 +27,11 @@ export class GetDescriptionHandler implements IQueryHandler<GetDescriptionQuery>
           'description': property.description,
           'links': [
             {
-              href: `/api/things/${query.thingName}/properties/${propertyName}`
+              href: `/api/things/${query.thingName}/properties/${property.name}`
             }
           ]
         };
-        acc[propertyName] = propertyDto;
+        acc[property.name] = propertyDto;
         return acc;
       }, {}),
       '@context': 'https://iot.mozilla.org/schemas/',

@@ -1,11 +1,10 @@
-import Property from './property.model';
+import { Property } from './property.model';
 
-interface Thing {
+export class Thing {
   type: string[];
   title: string;
   name: string;
   description?: string;
-  properties: { [name: string]: Property };
+  properties: Property[];
+  value: object;
 }
-
-export default Thing;
