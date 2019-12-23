@@ -11,23 +11,23 @@ export class RegisterThingHandler implements ICommandHandler<RegisterThingComman
   ) { }
 
   async execute(command: RegisterThingCommand): Promise<void> {
-    const thing = command.thing;
+    // const thing = command.thing;
 
-    const newThing: Thing = {
-      type: thing.type,
-      description: thing.description,
-      properties: thing.properties.map(p => ({
-        'title': p.title,
-        'description': p.description,
-        '@type': p['@type'],
-        'type': p.type,
-        'name': p.name
-      } as Property)),
-      title: thing.title,
-      name: thing.name,
-      value: null
-    };
+    // const newThing: Thing = {
+    //   type: thing.type,
+    //   description: thing.description,
+    //   properties: thing.properties.map(p => ({
+    //     'title': p.title,
+    //     'description': p.description,
+    //     '@type': p['@type'],
+    //     'type': p.type,
+    //     'name': p.name
+    //   } as Property)),
+    //   title: thing.title,
+    //   name: thing.name,
+    //   value: null
+    // };
 
-    this.thingService.registerThing(newThing);
+    // this.thingService.registerThing(newThing);
   }
 }

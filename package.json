@@ -12,7 +12,11 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "tslint -p tsconfig.json -c tslint.json"
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "lint-fix": "tslint --fix -p tsconfig.json -c tslint.json",
+    "migrate:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate --config ormconfig.ts -n",
+    "migrate:up": "ts-node ./node_modules/typeorm/cli.js migration:run",
+    "migrate:down": "ts-node ./node_modules/typeorm/cli.js migration:revert"
   },
   "dependencies": {
     "@nestjs/common": "^6.8.0",
@@ -24,6 +28,7 @@
     "@nestjs/websockets": "^6.10.3",
     "@types/dnssd": "^0.4.1",
     "ajv": "^6.10.2",
+    "class-transformer": "^0.2.3",
     "dnssd": "^0.4.1",
     "pg": "^7.14.0",
     "reflect-metadata": "^0.1.13",
@@ -45,7 +50,7 @@
     "supertest": "^4.0.2",
     "ts-jest": "^24.1.0",
     "ts-loader": "^6.2.0",
-    "ts-node": "^8.4.1",
+    "ts-node": "^8.5.4",
     "tsconfig-paths": "^3.9.0",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3"

@@ -3,9 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { WebThingModule } from './web-thing/web-thing.module';
 import { LoggerMiddleware } from './logger.middleware';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [WebThingModule],
+  imports: [WebThingModule, DatabaseModule],
   controllers: [AppController],
   providers: [AppService],
 })

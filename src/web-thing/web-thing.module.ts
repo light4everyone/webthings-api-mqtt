@@ -4,20 +4,20 @@ import { ThingService } from './services';
 import { CommandHandlers } from './commands/handlers';
 import { QueryHandlers } from './queries/handlers';
 import { CqrsModule } from '@nestjs/cqrs';
-import { WebThingConfig } from './web-thing.config';
-
-const configServiceProvider = {
-  provide: 'WebThingConfig',
-  useFactory: () =>
-    ({
-      baseUrl: process.env.BASE_URL
-    }) as WebThingConfig
-};
+import { configServiceProvider } from '../web-thing/providers/web-thing-config.provider';
+import { DatabaseModule } from '../database/database.module';
+import { thingProviders } from './providers/thing-repository.provider';
+import { propertyProviders } from './providers/property-repository.provider';
 
 @Module({
-  imports: [CqrsModule],
+  imports: [
+    CqrsModule,
+    DatabaseModule
+  ],
   controllers: [WebThingController],
   providers: [
+    ...thingProviders,
+    ...propertyProviders,
     configServiceProvider,
     ThingService,
     ...CommandHandlers,

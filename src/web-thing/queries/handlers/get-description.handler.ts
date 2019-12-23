@@ -27,11 +27,11 @@ export class GetDescriptionHandler implements IQueryHandler<GetDescriptionQuery>
           'description': property.description,
           'links': [
             {
-              href: `/api/things/${query.thingName}/properties/${property.name}`
+              href: `/api/things/${query.thingName}/properties/${property.alias}`
             }
           ]
         };
-        acc[property.name] = propertyDto;
+        acc[property.alias] = propertyDto;
         return acc;
       }, {}),
       '@context': 'https://iot.mozilla.org/schemas/',
