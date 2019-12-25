@@ -1,7 +1,7 @@
 export class PropertyRegisterDto {
   title: string;
   description?: string;
-  '@type': string;
+  contextType: string;
   type: string;
   name: string;
 }

@@ -1,41 +1,12 @@
 import { Property } from './property.model';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { ValueThing } from './value-thing.model';
+import { Document } from 'mongoose';
 
-@Entity()
-export class Thing {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({
-    type: 'simple-array',
-    nullable: false
-  })
-  type: string[];
-
-  @Column({
-    length: 50,
-    nullable: false
-  })
+export interface Thing extends Document {
+  types: string[];
   title: string;
-
-  @Column({
-    length: 50,
-    nullable: false
-  })
-  alias: string;
-
-  @Column({
-    length: 100,
-    nullable: true
-  })
+  name: string;
   description?: string;
-
-  @Column({
-    type: 'jsonb',
-    nullable: false
-  })
-  value: object;
-
-  @OneToMany(type => Property, property => property.thing)
+  values: ValueThing[];
   properties: Property[];
 }

@@ -1,33 +1,19 @@
 import { RegisterThingCommand } from '../register-thing.command';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { ThingService } from '../../services';
 import { Thing, Property } from '../../models';
+import { Inject } from '@nestjs/common';
+import { thingModelProvider } from '../../constants/model-provider.constants';
+import { Model } from 'mongoose';
 
 @CommandHandler(RegisterThingCommand)
 export class RegisterThingHandler implements ICommandHandler<RegisterThingCommand> {
 
   constructor(
-    private readonly thingService: ThingService
+    @Inject(thingModelProvider) private readonly thingModel: Model<Thing>
   ) { }
 
   async execute(command: RegisterThingCommand): Promise<void> {
-    // const thing = command.thing;
-
-    // const newThing: Thing = {
-    //   type: thing.type,
-    //   description: thing.description,
-    //   properties: thing.properties.map(p => ({
-    //     'title': p.title,
-    //     'description': p.description,
-    //     '@type': p['@type'],
-    //     'type': p.type,
-    //     'name': p.name
-    //   } as Property)),
-    //   title: thing.title,
-    //   name: thing.name,
-    //   value: null
-    // };
-
-    // this.thingService.registerThing(newThing);
+    const createdThing = new this.thingModel(command.thing);
+    await createdThing.save();
   }
 }

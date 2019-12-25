@@ -1,10 +1,18 @@
-import { createConnection } from 'typeorm';
-import { databaseConnection } from '../../constants/database.constants';
-import { connection } from '../postgres.connections';
+import { databaseConnection } from '../constants/database.constants';
+import * as mongoose from 'mongoose';
 
 export const databaseProviders = [
   {
     provide: databaseConnection,
-    useFactory: async () => await createConnection(connection),
+    useFactory: (): Promise<typeof mongoose> =>
+      mongoose.connect('mongodb://localhost:27017', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        dbName: 'webthingcloud',
+        authSource: 'admin',
+        user: 'admin',
+        pass: 'admin'
+      })
   },
 ];
