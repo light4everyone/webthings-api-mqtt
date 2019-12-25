@@ -4,7 +4,10 @@ import { LoggerMiddleware } from './logger.middleware';
 import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [WebThingModule, DatabaseModule],
+  imports: [
+    WebThingModule,
+    DatabaseModule
+  ],
   controllers: [],
   providers: [],
 })

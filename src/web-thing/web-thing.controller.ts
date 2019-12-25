@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Body, Post } from '@nestjs/common';
+import { Controller, Get, Param, Body, Post, UseInterceptors, CacheInterceptor } from '@nestjs/common';
 import { QueryBus, CommandBus } from '@nestjs/cqrs';
 import { ThingDescriptionDto, ThingRegisterDto } from './dto';
 import { GetDescriptionQuery } from './queries';
@@ -13,6 +13,7 @@ export class WebThingController {
   ) { }
 
   @Get(':thingName')
+  @UseInterceptors(CacheInterceptor)
   getThingDescription(@Param('thingName') thingName: string): Promise<ThingDescriptionDto> {
     return this.queryBus.execute(new GetDescriptionQuery(thingName));
   }

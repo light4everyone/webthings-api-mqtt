@@ -21,6 +21,7 @@
     "@nestjs/platform-fastify": "^6.10.12",
     "@nestjs/websockets": "^6.10.3",
     "ajv": "^6.10.2",
+    "cache-manager": "^2.10.1",
     "class-transformer": "^0.2.3",
     "mongoose": "^5.8.3",
     "reflect-metadata": "^0.1.13",

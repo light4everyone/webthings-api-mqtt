@@ -1,4 +1,4 @@
 export interface ValueThing {
   name: string;
-  value: object;
+  value: any;
 }

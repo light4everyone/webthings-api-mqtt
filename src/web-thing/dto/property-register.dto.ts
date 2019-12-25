@@ -4,4 +4,5 @@ export class PropertyRegisterDto {
   contextType: string;
   type: string;
   name: string;
+  defaultValue: any;
 }
