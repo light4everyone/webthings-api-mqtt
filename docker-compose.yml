@@ -2,17 +2,18 @@ version: '3.1'
 
 services:
 
-  webthings-cloud:
-    build: .
-    depends_on:
-      - mongo
-    ports:
-      - 8888:8888
-    networks:
-      - mongo-network
-      - things-network
-    environment:
-      MONGO_DB_CONNECTION: mongodb://mongo:27017
+  # webthings-cloud:
+  #   build: .
+  #   depends_on:
+  #     - mongo
+  #   ports:
+  #     - 8888:8888
+  #   networks:
+  #     - mongo-network
+  #     - things-network
+  #     - mosquitto-network
+  #   environment:
+  #     MONGO_DB_CONNECTION: mongodb://mongo:27017
 
   webthings-gateway:
     image: mozillaiot/gateway:latest
@@ -38,6 +39,18 @@ services:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
 
+  mosquitto:
+    image: eclipse-mosquitto
+    ports:
+      - 1883:1883
+      - 9001:9001
+    networks:
+      - mosquitto-network
+    # volumes:
+      # - E:/Projects/docker/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      # - E:/Projects/docker/mosquitto/log:/mosquitto/log
+      # - E:/Projects/docker/mosquitto/data:/mosquitto/data
+
   # mongo-express:
   #   image: mongo-express
   #   restart: always
@@ -51,4 +64,6 @@ networks:
   things-network:
     driver: bridge
   mongo-network:
+    driver: bridge
+  mosquitto-network:
     driver: bridge

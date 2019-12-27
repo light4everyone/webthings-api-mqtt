@@ -1,17 +1,16 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetDescriptionQuery } from '../get-description.query';
 import { ThingDescriptionDto } from '../../dto';
-import { WebThingConfig } from '../../web-thing.config';
 import { Inject } from '@nestjs/common';
 import { thingModelProvider } from '../../constants/model-provider.constants';
 import { Model } from 'mongoose';
-import { Thing } from 'src/web-thing/models';
+import { Thing } from '../../../web-thing/models';
 import { BusinessLogicException } from '../../../exceptions';
+import { env } from '../../../environments';
 
 @QueryHandler(GetDescriptionQuery)
 export class GetDescriptionHandler implements IQueryHandler<GetDescriptionQuery> {
   constructor(
-    @Inject('WebThingConfig') private readonly config: WebThingConfig,
     @Inject(thingModelProvider) private readonly thingModel: Model<Thing>,
   ) { }
 
@@ -23,7 +22,7 @@ export class GetDescriptionHandler implements IQueryHandler<GetDescriptionQuery>
     }
 
     const thingDescription: ThingDescriptionDto = {
-      'id': `https://mywebthingserver.com/things/${query.thingName}`,
+      'id': `http://${env.host}/things/${query.thingName}`,
       'title': thing.title,
       'description': thing.description,
       'properties': thing.properties.reduce((acc, property) => {
@@ -47,7 +46,11 @@ export class GetDescriptionHandler implements IQueryHandler<GetDescriptionQuery>
         {
           rel: 'properties',
           href: `/api/things/${query.thingName}/properties`
-        }
+        },
+        {
+          rel: 'alternate',
+          href: `ws://${env.host}/things/${query.thingName}`
+        },
       ]
     };
 

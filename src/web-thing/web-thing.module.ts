@@ -3,9 +3,9 @@ import { WebThingController } from './web-thing.controller';
 import { CommandHandlers } from './commands/handlers';
 import { QueryHandlers } from './queries/handlers';
 import { CqrsModule } from '@nestjs/cqrs';
-import { configServiceProvider } from '../web-thing/providers/web-thing-config.provider';
 import { DatabaseModule } from '../database/database.module';
 import { thingProviders } from './providers/thing-model.provider';
+import { ThingsGateway } from './web-thing.gateway';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { thingProviders } from './providers/thing-model.provider';
   ],
   controllers: [WebThingController],
   providers: [
-    configServiceProvider,
+    ThingsGateway,
     ...thingProviders,
     ...CommandHandlers,
     ...QueryHandlers
