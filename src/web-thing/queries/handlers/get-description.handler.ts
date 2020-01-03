@@ -22,7 +22,7 @@ export class GetDescriptionHandler implements IQueryHandler<GetDescriptionQuery>
     }
 
     const thingDescription: ThingDescriptionDto = {
-      'id': `http://${env.host}/things/${query.thingName}`,
+      'id': `http://${env.host}:${env.port}/api/things/${query.thingName}`,
       'title': thing.title,
       'description': thing.description,
       'properties': thing.properties.reduce((acc, property) => {
@@ -49,7 +49,7 @@ export class GetDescriptionHandler implements IQueryHandler<GetDescriptionQuery>
         },
         {
           rel: 'alternate',
-          href: `ws://${env.host}/things/${query.thingName}`
+          href: `ws://${env.host}:${env.port}/things/${query.thingName}`
         },
       ]
     };

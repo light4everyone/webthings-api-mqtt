@@ -1,6 +1,6 @@
 import { RegisterThingCommand } from '../register-thing.command';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Thing, Property } from '../../models';
+import { Thing } from '../../models';
 import { Inject } from '@nestjs/common';
 import { thingModelProvider } from '../../constants/model-provider.constants';
 import { Model } from 'mongoose';

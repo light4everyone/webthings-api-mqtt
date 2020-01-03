@@ -6,5 +6,6 @@ export const env = {
     mosquittoHost: process.env.MOSQUITTO_HOST ? process.env.MOSQUITTO_HOST : 'mosquitto',
     mosquittoPort: process.env.MOSQUITTO_PORT ? process.env.MOSQUITTO_PORT : 1883
   },
-  host: process.env.HOST ? process.env.HOST : 'localhost'
+  host: process.env.HOST ? process.env.HOST : 'localhost',
+  port: process.env.PORT ? process.env.PORT : 8888
 };

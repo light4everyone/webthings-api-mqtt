@@ -1,4 +1,4 @@
-import { ICommandHandler, CommandHandler } from '@nestjs/cqrs';
+import { ICommandHandler, CommandHandler, EventBus } from '@nestjs/cqrs';
 import { UpdatePropertyValueCommand } from '../update-property-value.command';
 import { Inject } from '@nestjs/common';
 import { thingModelProvider } from '../../constants/model-provider.constants';
@@ -6,11 +6,13 @@ import { Model } from 'mongoose';
 import { Thing } from '../../models';
 import { PropertyValueDto } from '../../dto/property-value.dto';
 import { BusinessLogicException } from '../../../exceptions';
+import { PropertyValueUpdatedEvent } from '../../events';
 
 @CommandHandler(UpdatePropertyValueCommand)
 export class UpdatePropertyValueHandler implements ICommandHandler<UpdatePropertyValueCommand> {
   constructor(
-    @Inject(thingModelProvider) private readonly thingModel: Model<Thing>
+    @Inject(thingModelProvider) private readonly thingModel: Model<Thing>,
+    private readonly eventBus: EventBus
   ) { }
 
   async execute(command: UpdatePropertyValueCommand): Promise<PropertyValueDto> {
@@ -40,6 +42,8 @@ export class UpdatePropertyValueHandler implements ICommandHandler<UpdatePropert
         'values.$.value': command.propertyValue[propertyName]
       }
     });
+
+    this.eventBus.publish(new PropertyValueUpdatedEvent(command.thingName, command.propertyValue));
 
     return {
       [propertyName]: command.propertyValue[propertyName]

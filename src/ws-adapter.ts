@@ -1,5 +1,4 @@
 import { INestApplicationContext, Logger } from '@nestjs/common';
-import { loadPackage } from '@nestjs/common/utils/load-package.util';
 import { AbstractWsAdapter } from '@nestjs/websockets';
 import {
   CLOSE_EVENT,
@@ -9,8 +8,8 @@ import {
 import { MessageMappingProperties } from '@nestjs/websockets/gateway-metadata-explorer';
 import { EMPTY as empty, fromEvent, Observable } from 'rxjs';
 import { filter, first, mergeMap, share, takeUntil } from 'rxjs/operators';
-
-let wsPackage: any = {};
+import * as WebSocket from 'ws';
+import * as UrlMatcher from 'url-pattern';
 
 enum READY_STATE {
   CONNECTING_STATE = 0,
@@ -24,34 +23,23 @@ export class WsAdapter extends AbstractWsAdapter {
 
   constructor(appOrHttpServer?: INestApplicationContext | any) {
     super(appOrHttpServer);
-    wsPackage = loadPackage('ws', 'WsAdapter', () => require('ws'));
   }
 
-  public create(
+  create(
     port: number,
-    options?: any & { namespace?: string; server?: any },
-  ): any {
-    const { server, ...wsOptions } = options;
-    if (port === 0 && this.httpServer) {
-      return this.bindErrorHandler(
-        new wsPackage.Server({
-          server: this.httpServer,
-          ...wsOptions,
-        }),
-      );
-    }
-    return server
-      ? server
-      : this.bindErrorHandler(
-        new wsPackage.Server({
-          port,
-          ...wsOptions,
-        }),
-      );
+    options?: WebSocket.ServerOptions,
+  ): WebSocket.Server {
+    const { ...wsOptions } = options;
+    return this.overrideShouldHandleMethod(this.bindErrorHandler(
+      new WebSocket.Server({
+        server: this.httpServer,
+        ...wsOptions,
+      })),
+    );
   }
 
-  public bindMessageHandlers(
-    client: any,
+  bindMessageHandlers(
+    client: WebSocket,
     handlers: MessageMappingProperties[],
     transform: (data: any) => Observable<any>,
   ) {
@@ -73,7 +61,7 @@ export class WsAdapter extends AbstractWsAdapter {
     source$.subscribe(onMessage);
   }
 
-  public bindMessageHandler(
+  bindMessageHandler(
     buffer: any,
     handlers: MessageMappingProperties[],
     transform: (data: any) => Observable<any>,
@@ -90,16 +78,30 @@ export class WsAdapter extends AbstractWsAdapter {
     }
   }
 
-  public bindErrorHandler(server: any) {
+  overrideShouldHandleMethod(server: WebSocket.Server): WebSocket.Server {
+    server.shouldHandle = (req) => {
+      const index = req.url.indexOf('?');
+      const pathname = index !== -1 ? req.url.slice(0, index) : req.url;
+
+      const pattern = new UrlMatcher(server.options.path);
+      const result = pattern.match(pathname);
+
+      return result != null;
+    };
+
+    return server;
+  }
+
+  bindErrorHandler(server: WebSocket.Server): WebSocket.Server {
     server.on(CONNECTION_EVENT, ws => {
       ws.on(ERROR_EVENT, (err: any) => this.logger.error(err));
     });
     server.on(ERROR_EVENT, (err: any) => this.logger.error(err));
+
     return server;
   }
 
-  // tslint:disable-next-line: ban-types
-  public bindClientDisconnect(client: any, callback: Function) {
+  bindClientDisconnect(client: WebSocket, callback: (this: WebSocket, code: number, reason: string) => void) {
     client.on(CLOSE_EVENT, callback);
   }
 }
