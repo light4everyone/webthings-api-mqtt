@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetValuePropertyQuery } from '../get-value-property.query';
 import { PropertyValueDto } from '../../dto/property-value.dto';
 import { Inject } from '@nestjs/common';
-import { thingModelProvider } from '../../constants/model-provider.constants';
+import { thingModelProvider } from '../../web-thing.constants';
 import { Model } from 'mongoose';
 import { Thing } from '../../models';
 import { BusinessLogicException } from '../../../exceptions';

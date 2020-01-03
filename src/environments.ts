@@ -3,9 +3,8 @@ export const env = {
     mongoDbConnection: process.env.MONGO_DB_CONNECTION ? process.env.MONGO_DB_CONNECTION : 'mongodb://localhost:27017'
   },
   mosquitto: {
-    mosquittoHost: process.env.MOSQUITTO_HOST ? process.env.MOSQUITTO_HOST : 'mosquitto',
-    mosquittoPort: process.env.MOSQUITTO_PORT ? process.env.MOSQUITTO_PORT : 1883
+    mosquittoUrl: process.env.MOSQUITTO_URL ? process.env.MOSQUITTO_URL : 'mqtt://localhost'
   },
   host: process.env.HOST ? process.env.HOST : 'localhost',
-  port: process.env.PORT ? process.env.PORT : 8888
+  port: process.env.PORT ? +process.env.PORT : 8888
 };

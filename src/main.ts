@@ -5,7 +5,8 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { WsAdapter } from './ws-adapter';
-import { Transport } from '@nestjs/common/enums/transport.enum';
+import { CustomServerMqtt } from './custom-mqtt-server';
+import { env } from './environments';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -14,11 +15,9 @@ async function bootstrap() {
   );
 
   app.connectMicroservice({
-    transport: Transport.MQTT,
-    options: {
-      host: 'localhost',
-      port: 1883,
-    },
+    strategy: new CustomServerMqtt({
+      url: env.mosquitto.mosquittoUrl
+    })
   });
 
   app.useWebSocketAdapter(new WsAdapter(app));

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ICommand, ofType, Saga } from '@nestjs/cqrs';
-import { map, tap } from 'rxjs/operators';
-import { UpdatePropertyValueCommand, NotifyClientsAboutNewPropertyValueCommand } from './commands';
+import { map, mergeMap } from 'rxjs/operators';
+import { UpdatePropertyValueCommand, NotifyClientsAboutNewPropertyValueCommand, NotifyDeviceAboutNewPropertyValueCommand } from './commands';
 import { NewPropertyValueReceivedEvent, PropertyValueUpdatedEvent } from './events';
 
 @Injectable()
@@ -19,7 +19,10 @@ export class WebThingSagas {
   propertyValueUpdated = (events$: Observable<any>): Observable<ICommand> => {
     return events$.pipe(
       ofType(PropertyValueUpdatedEvent),
-      map(event => new NotifyClientsAboutNewPropertyValueCommand(event.thingName, event.propertyValue))
+      mergeMap((event) => of(
+        new NotifyDeviceAboutNewPropertyValueCommand(event.thingName, event.propertyValue),
+        new NotifyClientsAboutNewPropertyValueCommand(event.thingName, event.propertyValue)
+      ))
     );
   }
 }

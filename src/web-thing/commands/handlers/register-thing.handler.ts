@@ -2,7 +2,7 @@ import { RegisterThingCommand } from '../register-thing.command';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Thing } from '../../models';
 import { Inject } from '@nestjs/common';
-import { thingModelProvider } from '../../constants/model-provider.constants';
+import { thingModelProvider } from '../../web-thing.constants';
 import { Model } from 'mongoose';
 import { ValueThing } from 'src/web-thing/models/value-thing.model';
 

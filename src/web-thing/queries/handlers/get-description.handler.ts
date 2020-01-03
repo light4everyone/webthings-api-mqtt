@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetDescriptionQuery } from '../get-description.query';
 import { ThingDescriptionDto } from '../../dto';
 import { Inject } from '@nestjs/common';
-import { thingModelProvider } from '../../constants/model-provider.constants';
+import { thingModelProvider } from '../../web-thing.constants';
 import { Model } from 'mongoose';
 import { Thing } from '../../../web-thing/models';
 import { BusinessLogicException } from '../../../exceptions';

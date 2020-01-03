@@ -1,7 +1,7 @@
 import { ICommandHandler, CommandHandler, EventBus } from '@nestjs/cqrs';
 import { UpdatePropertyValueCommand } from '../update-property-value.command';
 import { Inject } from '@nestjs/common';
-import { thingModelProvider } from '../../constants/model-provider.constants';
+import { thingModelProvider } from '../../web-thing.constants';
 import { Model } from 'mongoose';
 import { Thing } from '../../models';
 import { PropertyValueDto } from '../../dto/property-value.dto';

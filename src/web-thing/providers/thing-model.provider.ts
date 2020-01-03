@@ -1,5 +1,5 @@
 import { Connection } from 'mongoose';
-import { thingModelProvider } from '../constants/model-provider.constants';
+import { thingModelProvider } from '../web-thing.constants';
 import { ThingSchema } from '../schemas/thing.schema';
 import { databaseConnection } from '../../database/constants/database.constants';
 
