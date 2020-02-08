@@ -14,7 +14,7 @@ services:
       - things-network
       - mosquitto-network
     environment:
-      MONGO_DB_CONNECTION: mongodb://mongo:27017
+      MONGO_DB_URL: mongodb://mongo:27017
       MOSQUITTO_URL: mqtt://mosquitto
       HOST: webthings-cloud
       PORT: 8888
